@@ -28,108 +28,96 @@ const getAllProducts = async (req: Request, res: Response) => {
     const result = await ProductServices.getAllProductsFromDB();
     res.status(200).json({
       success: true,
-      message: "Successfully retreived all products",
+      message: 'Successfully retreived all products',
       data: result,
-    })
+    });
   } catch (err: any) {
     res.status(500).json({
       success: false,
-      message: err.message || "Internal server error",
+      message: err.message || 'Internal server error',
       error: err,
-    })
+    });
   }
-
-}
+};
 
 const getSingleProduct = async (req: Request, res: Response) => {
   try {
     const productId = req.params.productId;
-    const result = await ProductServices.getSingleProductFromDB(productId)
+    const result = await ProductServices.getSingleProductFromDB(productId);
     res.status(200).json({
       success: true,
-      message: "Successfully retreived a product",
+      message: 'Successfully retreived a product',
       data: result,
-    })
+    });
   } catch (err) {
     res.status(500).json({
       success: false,
-      message: err.message || "Internal server error",
+      message: err.message || 'Internal server error',
       error: err,
-    })
+    });
   }
-}
+};
 
 const updateProduct = async (req: Request, res: Response) => {
   try {
     const productId = req.params.productId;
     const updatedData = req.body;
-    const result = await ProductServices.updateProductInDB(productId, updatedData)
+    const result = await ProductServices.updateProductInDB(
+      productId,
+      updatedData,
+    );
     res.status(200).json({
       success: true,
-      message: "Product updated successfully",
+      message: 'Product updated successfully',
       data: result,
-    })
+    });
   } catch (err: any) {
     res.status(500).json({
       success: false,
-      message: err.message || "Internal server error",
+      message: err.message || 'Internal server error',
       error: err,
-    })
+    });
   }
-
-}
+};
 
 const deleteProduct = async (req: Request, res: Response) => {
   try {
     const productId = req.params.productId;
-    const result = await ProductServices.deleteProductFromDB(productId)
+    const result = await ProductServices.deleteProductFromDB(productId);
     res.status(200).json({
       success: true,
-      message: "Successfully delete a product",
+      message: 'Successfully delete a product',
       data: result,
-    })
+    });
   } catch (err: any) {
     res.status(500).json({
       success: false,
-      message: err.message || "Internal server error",
+      message: err.message || 'Internal server error',
       error: err,
-    })
+    });
   }
-}
+};
 
 const searchProduct = async (req: Request, res: Response) => {
   try {
     const { searchTerm } = req.query;
-    if (!searchTerm) {
-      return res.status(400).json({
-        success: false,
-        message: "Search term is required",
-      })
-    }
-    const result = await ProductServices.searchProductInDB(searchTerm as string)
-
-    if (result.length === 0) {
-      return res.status(404).json({
-        success: false,
-        message: `No products found matching the search term :${searchTerm}`
-      });
-    }
+    const result = await ProductServices.searchProductInDB(
+      searchTerm as string,
+    );
 
     res.status(200).json({
       success: true,
       message: `Products matching search term ${searchTerm} fetched successfully`,
       data: result,
-    })
+    });
   } catch (err: any) {
     res.status(500).json({
       success: false,
-      message: err.message || "Internal server error",
+      message: err.message || 'Internal server error',
       error: err,
-    })
+    });
   }
-}
-
-
+};
 
 export const ProductControllers = {
   createProduct,

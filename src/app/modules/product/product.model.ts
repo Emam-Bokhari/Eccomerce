@@ -32,8 +32,8 @@ const productSchema = new mongoose.Schema({
         value: {
           type: String,
           required: true,
-        }
-      }
+        },
+      },
     ],
     _id: false,
   },
@@ -50,24 +50,27 @@ const productSchema = new mongoose.Schema({
   isDeleted: {
     type: Boolean,
     default: false,
-  }
+  },
 });
 
 // create a text index for search functionality
 // productSchema.index({ name: "text", description: "text", tags: "text" });
 
 // document middleware
-productSchema.pre("find", function () {
-  this.find({ isDeleted: { $ne: true } })
-})
+productSchema.pre('find', function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
 
-productSchema.pre("findOne", function () {
-  this.findOne({ isDeleted: { $ne: true } })
-})
+productSchema.pre('findOne', function (next) {
+  this.findOne({ isDeleted: { $ne: true } });
+  next();
+});
 
 // aggregate middleware
-productSchema.pre("aggregate", function () {
-  this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } })
-})
+productSchema.pre('aggregate', function (next) {
+  this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
+  next();
+});
 
 export const Product = model<TProduct>('Product', productSchema);
