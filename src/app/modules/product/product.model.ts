@@ -22,18 +22,21 @@ const productSchema = new mongoose.Schema({
     type: [String],
     required: true,
   },
-  variants: [
-    {
-      type: {
-        type: String,
-        required: true,
-      },
-      value: {
-        type: String,
-        required: true,
-      },
-    },
-  ],
+  variants: {
+    type: [
+      {
+        type: {
+          type: String,
+          required: true,
+        },
+        value: {
+          type: String,
+          required: true,
+        }
+      }
+    ],
+    _id: false,
+  },
   inventory: {
     quantity: {
       type: Number,
