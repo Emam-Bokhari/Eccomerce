@@ -53,6 +53,9 @@ const productSchema = new mongoose.Schema({
   }
 });
 
+// create a text index for search functionality
+// productSchema.index({ name: "text", description: "text", tags: "text" });
+
 // document middleware
 productSchema.pre("find", function () {
   this.find({ isDeleted: { $ne: true } })

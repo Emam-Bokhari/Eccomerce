@@ -97,10 +97,45 @@ const deleteProduct = async (req: Request, res: Response) => {
   }
 }
 
+const searchProduct = async (req: Request, res: Response) => {
+  try {
+    const { searchTerm } = req.query;
+    if (!searchTerm) {
+      return res.status(400).json({
+        success: false,
+        message: "Search term is required",
+      })
+    }
+    const result = await ProductServices.searchProductInDB(searchTerm as string)
+
+    if (result.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: `No products found matching the search term :${searchTerm}`
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: `Products matching search term ${searchTerm} fetched successfully`,
+      data: result,
+    })
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message || "Internal server error",
+      error: err,
+    })
+  }
+}
+
+
+
 export const ProductControllers = {
   createProduct,
   getAllProducts,
   getSingleProduct,
   updateProduct,
   deleteProduct,
+  searchProduct,
 };
