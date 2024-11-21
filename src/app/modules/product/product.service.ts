@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import { TProduct } from './product.interface';
 import { Product } from './product.model';
 
@@ -12,7 +13,12 @@ const getAllProductsFromDB = async () => {
 }
 
 const getSingleProductFromDB = async (productId: string) => {
-  const result = await Product.findOne({ _id: productId })
+  // const result = await Product.findOne({ _id: productId })
+
+  const result = await Product.aggregate([
+    //stage:1
+    { $match: { _id: new mongoose.Types.ObjectId(productId) } }
+  ])
   return result;
 }
 
@@ -21,9 +27,15 @@ const updateProductInDB = async (productId: string, updatedData: TProduct) => {
   return result;
 }
 
+const deleteProductFromDB = async (productId: string) => {
+  const result = await Product.updateOne({ _id: productId }, { isDeleted: true })
+  return result;
+}
+
 export const ProductServices = {
   createProductIntoDB,
   getAllProductsFromDB,
   getSingleProductFromDB,
   updateProductInDB,
+  deleteProductFromDB,
 };

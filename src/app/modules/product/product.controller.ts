@@ -79,9 +79,28 @@ const updateProduct = async (req: Request, res: Response) => {
 
 }
 
+const deleteProduct = async (req: Request, res: Response) => {
+  try {
+    const productId = req.params.productId;
+    const result = await ProductServices.deleteProductFromDB(productId)
+    res.status(200).json({
+      success: true,
+      message: "Successfully delete a product",
+      data: result,
+    })
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message || "Internal server error",
+      error: err,
+    })
+  }
+}
+
 export const ProductControllers = {
   createProduct,
   getAllProducts,
   getSingleProduct,
   updateProduct,
+  deleteProduct,
 };

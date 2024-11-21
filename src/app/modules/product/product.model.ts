@@ -47,6 +47,24 @@ const productSchema = new mongoose.Schema({
       required: true,
     },
   },
+  isDeleted: {
+    type: Boolean,
+    default: false,
+  }
 });
+
+// document middleware
+productSchema.pre("find", function () {
+  this.find({ isDeleted: { $ne: true } })
+})
+
+productSchema.pre("findOne", function () {
+  this.findOne({ isDeleted: { $ne: true } })
+})
+
+// aggregate middleware
+productSchema.pre("aggregate", function () {
+  this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } })
+})
 
 export const Product = model<TProduct>('Product', productSchema);

@@ -29,6 +29,7 @@ const productValidationSchema = z.object({
     quantity: z.number().min(0, 'Quantity must be greater than or equal to 0'),
     inStock: z.boolean(),
   }),
+  isDeleted: z.boolean().default(false)
 });
 
 export default productValidationSchema;
